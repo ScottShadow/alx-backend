@@ -11,7 +11,8 @@ class Server:
 
     def __init__(self):
         """
-        Initializes the Server class with a private attribute __dataset set to None.
+        Initializes the Server class with a private attribute __dataset set
+        to None.
         """
         self.__dataset = None
 
@@ -28,14 +29,17 @@ class Server:
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """
-        Retrieves a specific page from the dataset based on the given page number and page size.
+        Retrieves a specific page from the dataset based on the given page
+        number and page size.
 
         Parameters:
-            page (int): The page number to retrieve from the dataset. Defaults to 1.
+            page (int): The page number to retrieve from the dataset. Defaults
+            to 1.
             page_size (int): The number of items per page. Defaults to 10.
 
         Returns:
-            List[List]: A list of lists representing the data on the specified page.
+            List[List]: A list of lists representing the data on the specified
+            page.
         """
         assert isinstance(page, int) and isinstance(page_size, int)
         assert page > 0 and page_size > 0
@@ -49,7 +53,8 @@ class Server:
 
 def index_range(page: int, page_size: int) -> Tuple:
     """
-    Calculate the start and end index of a page based on the page number and page size.
+    Calculate the start and end index of a page based on the page number and
+    page size.
 
     Parameters:
         page (int): The page number.
