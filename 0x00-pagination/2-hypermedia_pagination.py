@@ -4,8 +4,7 @@
 """
 import csv
 import math
-from typing import List
-from typing import Tuple
+from typing import List, Tuple, Dict, Any
 
 
 def index_range(page: int, page_size: int) -> Tuple:
@@ -77,7 +76,7 @@ class Server:
             return []
         return self.dataset()[start:end]
 
-    def get_hyper(self, page: int = 1, page_size: int = 10):
+    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict[str, Any]:
         """
         Calculates the total number of pages based on the dataset length and
         age size.
