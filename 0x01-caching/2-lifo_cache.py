@@ -1,44 +1,46 @@
 #!/usr/bin/env python3
-BaseCaching = __import__("0-basic_cache").BaseCaching
+"""
+LIFO Caching
+"""
 
 
-class LIFOCache (BaseCaching):
-    key_list = []
+BaseCaching = __import__('base_caching').BaseCaching
+
+
+class LIFOCache(BaseCaching):
+    """
+     class LIFOCache that inherits from BaseCaching and is a caching system
+    """
 
     def __init__(self):
+        """
+        Init method
+        """
         super().__init__()
+        self.key_indexes = []
 
     def put(self, key, item):
-        # print("Putting key: {} and item: {} into cache".format(key, item))
-        if key and item is not None:
-            # print("Key and item are not None, proceeding to put them into cache")
-            if key not in self.key_list:
-                # print("Key is not in key_list, checking cache size")
-                if len(self.cache_data.keys()) == BaseCaching.MAX_ITEMS:
-                    # print("Cache is full, discarding last key")
-                    discarded_key = self.key_list[-1]
-                    print("DISCARD: {}".format(discarded_key))
-                    del self.cache_data[discarded_key]
-                    self.key_list.pop()
-                self.cache_data[key] = item
-                self.key_list.append(key)
-                # print("Successfully put key: {} and item: {} into cache, LK:{}".format(
-                #    key, item, self.key_list[-1]))
-            else:
-                # print("Key exists, updating cache")
-                self.cache_data[key] = item
-                self.key_list.remove(key)
-                self.key_list.append(key)
-                # print("Successfully updated key: {} and item: {} into cache, LK:{}".format(
-                #    key, item, self.key_list[-1]))
+        """
+        Must assign to the dictionary self.cache_data
+        the item value for the key key.
+        """
+        if key and item:
+            if len(self.cache_data) >= self.MAX_ITEMS:
+                if key in self.cache_data:
+                    del self.cache_data[key]
+                    self.key_indexes.remove(key)
+                else:
+                    del self.cache_data[self.key_indexes[self.MAX_ITEMS - 1]]
+                    item_discarded = self.key_indexes.pop(self.MAX_ITEMS - 1)
+                    print("DISCARD:", item_discarded)
+
+            self.cache_data[key] = item
+            self.key_indexes.append(key)
 
     def get(self, key):
-        # print("Getting key: {} from cache".format(key))
-        if key is not None:
-            for cache_key in self.cache_data.keys():
-                # print("Checking cache key: {}".format(cache_key))
-                if cache_key == key:
-                    # print("Found key in cache")
-                    return self.cache_data[key]
-        # print("Key not found in cache")
+        """
+        Must return the value in self.cache_data linked to key.
+        """
+        if key in self.cache_data:
+            return self.cache_data[key]
         return None

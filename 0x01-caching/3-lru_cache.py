@@ -1,53 +1,51 @@
 #!/usr/bin/env python3
-BaseCaching = __import__("0-basic_cache").BaseCaching
+"""
+LRU Caching
+"""
 
 
-class LRUCache (BaseCaching):
-    key_list = {}
-    least_rel = None
-    ins_rel = 0
+from lib2to3.pgen2.token import BACKQUOTE
+from typing import OrderedDict
+
+
+BaseCaching = __import__('base_caching').BaseCaching
+
+
+class LRUCache(BaseCaching):
+    """
+    class LRUCache that inherits from BaseCaching and is a caching system
+    """
 
     def __init__(self):
+        """
+        Init method
+        """
         super().__init__()
+        self.lru_order = OrderedDict()
 
     def put(self, key, item):
-        # print("Putting key: {} and item: {} into cache".format(key, item))
-        if key and item is not None:
-            # print("Key and item are not None, proceeding to put them into cache")
-            if key not in self.key_list:
-                # print("Key is not in key_list, checking cache size")
-                if len(self.cache_data.keys()) == BaseCaching.MAX_ITEMS:
-                    # print("Cache is full, discarding lest relevant key")
-                    # print(self.key_list, f"LRK: {self.least_rel}")
-                    for temp, _ in self.key_list.items():
-                        if self.least_rel is None:
-                            self.least_rel = temp
-                        elif self.key_list[temp] < self.key_list[self.least_rel]:
-                            self.least_rel = temp
-                    discarded_key = self.least_rel
-                    print("DISCARD: {}".format(discarded_key))
-                    del self.cache_data[discarded_key]
-                    del self.key_list[discarded_key]
-                    self.least_rel = None
-                self.cache_data[key] = item
-                self.key_list[key] = self.ins_rel
-                self.ins_rel += 1
-                # print("Successfully put key: {} and item: {} into cache, LK:{}".format(
-                #    key, item, self.key_list[-1]))
-            else:
-                # print("Key exists, updating cache")
-                self.cache_data[key] = item
-                self.key_list[key] += 1
-                # print("Successfully updated key: {} and item: {} into cache, LK:{}".format(
-                #    key, item, self.key_list[-1]))
+        """
+        Must assign to the dictionary self.cache_data
+        the item value for the key key.
+        """
+        if key and item:
+            self.lru_order[key] = item
+            self.lru_order.move_to_end(key)
+            self.cache_data[key] = item
+
+        if len(self.cache_data) > BaseCaching.MAX_ITEMS:
+            item_discarded = next(iter(self.lru_order))
+            del self.cache_data[item_discarded]
+            print("DISCARD:", item_discarded)
+
+        if len(self.lru_order) > BaseCaching.MAX_ITEMS:
+            self.lru_order.popitem(last=False)
 
     def get(self, key):
-        # print("Getting key: {} from cache".format(key))
-        if key is not None:
-            if key in self.cache_data:
-                # rint("Found key in cache")
-                self.key_list[key] = self.ins_rel
-                print(self.key_list)
-                return self.cache_data[key]
-        # print("Key not found in cache")
+        """
+        Must return the value in self.cache_data linked to key.
+        """
+        if key in self.cache_data:
+            self.lru_order.move_to_end(key)
+            return self.cache_data[key]
         return None

@@ -1,30 +1,45 @@
 #!/usr/bin/env python3
-BaseCaching = __import__("0-basic_cache").BaseCaching
+"""
+FIFO Caching
+"""
+
+BaseCaching = __import__('base_caching').BaseCaching
 
 
-class FIFOCache (BaseCaching):
+class FIFOCache(BaseCaching):
+    """
+    a class FIFOCache that inherits from BaseCaching and is a caching system
+    """
+
     def __init__(self):
+        """
+        Init method
+        """
         super().__init__()
+        self.key_indexes = []
 
     def put(self, key, item):
-        print("Putting key: {} and item: {} into cache".format(key, item))
-        if len(self.cache_data.keys()) == BaseCaching.MAX_ITEMS:
-            for first_key in self.cache_data.keys():
-                print("DISCARD:", first_key)
-                del self.cache_data[first_key]
-                break
-        if key and item is not None:
-            # print("Key and item are not None, proceeding to put them into cache")
+        """
+        assign to the dictionary self.cache_data
+        the item value for the key key.
+        """
+        if key and item:
+            if key in self.cache_data:
+                self.cache_data[key] = item
+                return
+
+            if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+                item_discarded = self.key_indexes.pop(0)
+                del self.cache_data[item_discarded]
+                print("DISCARD:", item_discarded)
+
             self.cache_data[key] = item
-            print("Successfully put key: {} and item: {} into cache".format(key, item))
+            self.key_indexes.append(key)
 
     def get(self, key):
-        # print("Getting key: {} from cache".format(key))
-        if key is not None:
-            for cache_key in self.cache_data.keys():
-                # print("Checking cache key: {}".format(cache_key))
-                if cache_key == key:
-                    # print("Found key in cache")
-                    return self.cache_data[key]
-        # print("Key not found in cache")
+        """
+        return the value in self.cache_data linked to key.
+        """
+        if key in self.cache_data:
+            return self.cache_data[key]
         return None

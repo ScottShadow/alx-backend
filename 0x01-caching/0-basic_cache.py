@@ -1,30 +1,27 @@
 #!/usr/bin/env python3
-BaseCaching = __import__("base_caching").BaseCaching
+"""
+Basic ditionary
+"""
+
+
+BaseCaching = __import__('base_caching').BaseCaching
 
 
 class BasicCache(BaseCaching):
-
-    def __init__(self):
-        """
-        Constructor for the class.
-        """
-        super().__init__()
-        print("BasicCache instance created")
+    """
+    Basic Cache class that inherits from BaseCaching
+    """
 
     def put(self, key, item):
-        print("Putting key: {} and item: {} into cache".format(key, item))
-        if key and item is not None:
-            print("Key and item are not None, proceeding to put them into cache")
+        """
+        Must assign to the dictionary self.cache_data
+        the item value for the key key.
+        """
+        if key and item:
             self.cache_data[key] = item
-            print("Successfully put key: {} and item: {} into cache".format(key, item))
 
     def get(self, key):
-        print("Getting key: {} from cache".format(key))
-        if key is not None:
-            for cache_key in self.cache_data.keys():
-                print("Checking cache key: {}".format(cache_key))
-                if cache_key == key:
-                    print("Found key in cache")
-                    return self.cache_data[key]
-        print("Key not found in cache")
-        return None
+        """
+        Must return the value in self.cache_data linked to key.
+        """
+        return self.cache_data.get(key, None)
