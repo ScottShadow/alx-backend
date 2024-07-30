@@ -1,19 +1,14 @@
 <!DOCTYPE html>
-<html lang="{{ get_locale() }}">
-
-<head>
-    <meta charset="UTF-8">
+<html>
+  <head>
     <title>{{ _('home_title') }}</title>
-</head>
-
-<body>
+  </head>
+  <body>
     <h1>{{ _('home_header') }}</h1>
     {% if g.user %}
     <p>{{ _('logged_in_as', username=g.user.name) }}</p>
     {% else %}
     <p>{{ _('not_logged_in') }}</p>
     {% endif %}
-    <p>Current locale: {{ g.locale }}</p>
-</body>
-
+  </body>
 </html>
